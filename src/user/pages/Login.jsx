@@ -1,7 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import api from "../../shared/api";
+// import axios from "axios";
 // import AuthenticationUseCase from "../../usecases/authentication_usecase";
 import {
   Box,
@@ -29,7 +31,7 @@ const ToastFailed = Swal.mixin({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { handleSubmit, setError, register, formState } = useForm();
   const { errors } = formState;
   const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +39,18 @@ const Login = () => {
   const [disabled, setDisabled] = useState(false);
 
   const handleLogin = async (data) => {
-    console.log("teste");
+    console.log(data.email);
+    try {
+      const postLogin = await api.post("/login", {
+        email: data.email,
+        password: data.password,
+      });
+
+      // postLogin
+        // const cookies = postLogin.headers["set-cookie"];
+        console.log(postLogin);
+      // });
+    } catch (error) {}
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -147,7 +160,7 @@ const Login = () => {
                 {...register("email", {
                   required: "Email is required!",
                   pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    // value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message: "invalid email address",
                   },
                 })}
